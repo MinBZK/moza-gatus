@@ -1,0 +1,119 @@
+metrics: true
+ui:
+  title: "Health | MijnOverheidZakelijk"
+  dashboard-heading: "MijnOverheidZakelijk"
+  header: "MijnOverheidZakelijk"
+  dashboard-subheading: "Status van de health van onze applicaties en urls"
+  favicon:
+    default: https://www.mijnoverheidzakelijk.nl/favicon.ico
+  logo: https://www.rijksoverheid.nl/binaries/content/gallery/rijksoverheid/channel-afbeeldingen/logos/beeldmerk-rijksoverheid-desktop.svg
+alerting:
+  mattermost:
+    webhook-url: "${MATTERMOST_WEBHOOK_URL}"
+    client:
+      insecure: true
+endpoints:
+- name: mijnoverheid
+  url: https://mijnoverheidzakelijk.nl
+  interval: 5m
+  conditions:
+    - "[STATUS] == 200"
+  alerts:
+    - type: mattermost
+      description: "healthcheck failed - https://mijnoverheidzakelijk.nl"
+      send-on-resolved: true
+      minimum-reminder-interval: "15m"
+- name: mijnoverheid www
+  url: https://www.mijnoverheidzakelijk.nl
+  interval: 5m
+  conditions:
+    - "[STATUS] == 200"
+  alerts:
+    - type: mattermost
+      description: "healthcheck failed - https://www.mijnoverheidzakelijk.nl"
+      send-on-resolved: true
+      minimum-reminder-interval: "15m"
+- name: mijnoverheid docs
+  url: https://docs.mijnoverheidzakelijk.nl
+  interval: 5m
+  conditions:
+    - "[STATUS] == 200"
+  alerts:
+    - type: mattermost
+      description: "healthcheck failed - https://docs.mijnoverheidzakelijk.nl"
+      send-on-resolved: true
+      minimum-reminder-interval: "15m"
+- name: mijnoverheid profiel service (acceptatie)
+  url: http://profiel-service-acc-mgmt.logius-moz-poc.svc.cluster.local:9090/q/health
+  ui:
+    hide-url: true
+  interval: 5m
+  conditions:
+    - "[STATUS] == 200"
+    - "[BODY].status == UP"
+    - "[BODY].checks[0].status == UP"
+  alerts:
+    - type: mattermost
+      description: "healthcheck failed (acceptatie) - profiel.mijnoverheidzakelijk.nl"
+      send-on-resolved: true
+      minimum-reminder-interval: "15m"
+- name: mijnoverheid profiel service (dev)
+  url: http://profiel-service-mgmt.logius-moz-poc.svc.cluster.local:9090/q/health
+  ui:
+    hide-url: true
+  interval: 5m
+  conditions:
+    - "[STATUS] == 200"
+    - "[BODY].status == UP"
+    - "[BODY].checks[0].status == UP"
+  alerts:
+    - type: mattermost
+      description: "healthcheck failed (dev) - https://profiel-service.logius-moz-poc.test3.s15m.nl"
+      send-on-resolved: true
+      minimum-reminder-interval: "15m"
+- name: mijnoverheid moza
+  url: https://moza.mijnoverheidzakelijk.nl
+  interval: 5m
+  conditions:
+    - "[STATUS] == 200"
+  alerts:
+    - type: mattermost
+      description: "healthcheck failed - https://moza.mijnoverheidzakelijk.nl"
+      send-on-resolved: true
+      minimum-reminder-interval: "15m"
+- name: keycloak
+  url: http://keycloak-keycloakx-http.logius-moz-poc.svc.cluster.local:9000/auth/health
+  ui:
+    hide-url: true
+  interval: 5m
+  conditions:
+    - "[STATUS] == 200"
+    - "[BODY].status == UP"
+    - "[BODY].checks[0].status == UP"
+    - "[BODY].checks[1].status == UP"
+  alerts:
+    - type: mattermost
+      description: "healthcheck failed - keycloak"
+      send-on-resolved: true
+      minimum-reminder-interval: "15m"
+- name: cert-warning
+  url: https://www.mijnoverheidzakelijk.nl
+  interval: 12h
+  conditions:
+    - "[CERTIFICATE_EXPIRATION] > 168h"
+  alerts:
+    - type: mattermost
+      description: "certificate expiring within 7 days - https://www.mijnoverheidzakelijk.nl"
+      send-on-resolved: true
+      minimum-reminder-interval: "15m"
+
+- name: cert-critical
+  url: https://www.mijnoverheidzakelijk.nl
+  interval: 12h
+  conditions:
+    - "[CERTIFICATE_EXPIRATION] > 24h"
+  alerts:
+    - type: mattermost
+      description: "certificate expiring within 24h - https://www.mijnoverheidzakelijk.nl"
+      send-on-resolved: true
+      minimum-reminder-interval: "15m"
