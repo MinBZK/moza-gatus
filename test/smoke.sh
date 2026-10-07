@@ -20,9 +20,7 @@ EXPECTED_ENDPOINTS='mijnoverheid
 mijnoverheid www
 mijnoverheid docs
 mijnoverheid profiel service (acceptatie)
-mijnoverheid profiel service (dev)
 mijnoverheid moza
-keycloak
 cert-warning
 cert-critical'
 

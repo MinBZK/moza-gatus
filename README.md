@@ -2,7 +2,7 @@
 
 [Gatus](https://github.com/TwiN/gatus) healthcheck-dashboard voor MijnOverheidZakelijk, gedeployed op ZAD.
 
-Dit is de ZAD-variant van de Gatus die op het Standaard Platform draait (Helm chart `twin/gatus` 1.5.0, namespace `logius-moz-poc`, infra-files op de Logius GitLab). De config is hetzelfde; alleen de Mattermost-webhook komt hier uit een env-var in plaats van uit de ConfigMap.
+Dit is de ZAD-variant van de Gatus die op het Standaard Platform draait (Helm chart `twin/gatus` 1.5.0, namespace `logius-moz-poc`, infra-files op de Logius GitLab). De config komt overeen met die op het Standaard Platform, met twee verschillen: de Mattermost-webhook komt uit een env-var in plaats van uit de ConfigMap, en de cluster-interne checks (profiel-service dev en acceptatie op poort 9090, Keycloak) ontbreken, want die adressen zijn vanaf ZAD niet bereikbaar. De profiel-service acceptatie wordt via de publieke URL gecontroleerd.
 
 ## Hoe het werkt
 

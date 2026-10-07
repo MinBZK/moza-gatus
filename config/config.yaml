@@ -43,32 +43,16 @@ endpoints:
       description: "healthcheck failed - https://docs.mijnoverheidzakelijk.nl"
       send-on-resolved: true
       minimum-reminder-interval: "15m"
+# The health endpoint of the profiel service is internal to its cluster; from ZAD only the
+# public URL is reachable, and its OpenAPI document is the one path that answers without auth.
 - name: mijnoverheid profiel service (acceptatie)
-  url: http://profiel-service-acc-mgmt.logius-moz-poc.svc.cluster.local:9090/q/health
-  ui:
-    hide-url: true
+  url: https://profiel.mijnoverheidzakelijk.nl/openapi.json
   interval: 5m
   conditions:
     - "[STATUS] == 200"
-    - "[BODY].status == UP"
-    - "[BODY].checks[0].status == UP"
   alerts:
     - type: mattermost
-      description: "healthcheck failed (acceptatie) - profiel.mijnoverheidzakelijk.nl"
-      send-on-resolved: true
-      minimum-reminder-interval: "15m"
-- name: mijnoverheid profiel service (dev)
-  url: http://profiel-service-mgmt.logius-moz-poc.svc.cluster.local:9090/q/health
-  ui:
-    hide-url: true
-  interval: 5m
-  conditions:
-    - "[STATUS] == 200"
-    - "[BODY].status == UP"
-    - "[BODY].checks[0].status == UP"
-  alerts:
-    - type: mattermost
-      description: "healthcheck failed (dev) - https://profiel-service.logius-moz-poc.test3.s15m.nl"
+      description: "healthcheck failed (acceptatie) - https://profiel.mijnoverheidzakelijk.nl"
       send-on-resolved: true
       minimum-reminder-interval: "15m"
 - name: mijnoverheid moza
@@ -79,21 +63,6 @@ endpoints:
   alerts:
     - type: mattermost
       description: "healthcheck failed - https://moza.mijnoverheidzakelijk.nl"
-      send-on-resolved: true
-      minimum-reminder-interval: "15m"
-- name: keycloak
-  url: http://keycloak-keycloakx-http.logius-moz-poc.svc.cluster.local:9000/auth/health
-  ui:
-    hide-url: true
-  interval: 5m
-  conditions:
-    - "[STATUS] == 200"
-    - "[BODY].status == UP"
-    - "[BODY].checks[0].status == UP"
-    - "[BODY].checks[1].status == UP"
-  alerts:
-    - type: mattermost
-      description: "healthcheck failed - keycloak"
       send-on-resolved: true
       minimum-reminder-interval: "15m"
 - name: cert-warning
