@@ -24,8 +24,7 @@ env:
   REGISTRY: ghcr.io
   # GHCR vereist lowercase; github.repository is MinBZK/... (hoofdletters) → hardcode lowercase.
   IMAGE_NAME: minbzk/moza-gatus
-  # TODO: invullen zodra het ZAD-project voor Gatus bestaat (zie README.md).
-  ZAD_PROJECT_ID: ''
+  ZAD_PROJECT_ID: mozag-on9
 
 jobs:
   test:
