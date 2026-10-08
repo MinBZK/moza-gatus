@@ -6,6 +6,7 @@ ui:
   dashboard-subheading: "Status van de health van onze applicaties en urls"
   favicon:
     default: https://www.mijnoverheidzakelijk.nl/favicon.ico
+  default-sort-by: group
   logo: https://www.rijksoverheid.nl/binaries/content/gallery/rijksoverheid/channel-afbeeldingen/logos/beeldmerk-rijksoverheid-desktop.svg
 alerting:
   mattermost:
