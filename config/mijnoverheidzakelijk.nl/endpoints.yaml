@@ -1,6 +1,8 @@
-# Endpoints van MijnOverheidZakelijk; gelijk aan de config op het Standaard Platform.
+# Endpoints op het domein mijnoverheidzakelijk.nl; gelijk aan de config op het Standaard
+# Platform, op de group na.
 endpoints:
 - name: mijnoverheid
+  group: mijnoverheidzakelijk.nl
   url: https://mijnoverheidzakelijk.nl
   interval: 5m
   conditions:
@@ -11,6 +13,7 @@ endpoints:
       send-on-resolved: true
       minimum-reminder-interval: "15m"
 - name: mijnoverheid www
+  group: mijnoverheidzakelijk.nl
   url: https://www.mijnoverheidzakelijk.nl
   interval: 5m
   conditions:
@@ -21,6 +24,7 @@ endpoints:
       send-on-resolved: true
       minimum-reminder-interval: "15m"
 - name: mijnoverheid docs
+  group: mijnoverheidzakelijk.nl
   url: https://docs.mijnoverheidzakelijk.nl
   interval: 5m
   conditions:
@@ -33,6 +37,7 @@ endpoints:
 # The health endpoint of the profiel service is internal to its cluster; from ZAD only the
 # public URL is reachable, and its OpenAPI document is the one path that answers without auth.
 - name: mijnoverheid profiel service (acceptatie)
+  group: mijnoverheidzakelijk.nl
   url: https://profiel.mijnoverheidzakelijk.nl/openapi.json
   interval: 5m
   conditions:
@@ -43,6 +48,7 @@ endpoints:
       send-on-resolved: true
       minimum-reminder-interval: "15m"
 - name: mijnoverheid moza
+  group: mijnoverheidzakelijk.nl
   url: https://moza.mijnoverheidzakelijk.nl
   interval: 5m
   conditions:
@@ -53,6 +59,7 @@ endpoints:
       send-on-resolved: true
       minimum-reminder-interval: "15m"
 - name: cert-warning
+  group: mijnoverheidzakelijk.nl
   url: https://www.mijnoverheidzakelijk.nl
   interval: 12h
   conditions:
@@ -64,6 +71,7 @@ endpoints:
       minimum-reminder-interval: "15m"
 
 - name: cert-critical
+  group: mijnoverheidzakelijk.nl
   url: https://www.mijnoverheidzakelijk.nl
   interval: 12h
   conditions:
