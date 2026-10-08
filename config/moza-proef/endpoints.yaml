@@ -1,0 +1,27 @@
+# Endpoints van de MOZa-proefomgeving (MinBZK/moza-poc, branch proef, op ZAD).
+# De group bundelt ze in het dashboard onder een eigen kopje.
+endpoints:
+- name: moza
+  group: moza proef
+  url: https://proef.moza.rijksapp.dev/moza/
+  interval: 5m
+  conditions:
+    - "[STATUS] == 200"
+    - "[BODY] == pat(*<title>MijnOverheid Zakelijk*)"
+    - "[RESPONSE_TIME] < 3000"
+  alerts:
+    - type: mattermost
+      description: "healthcheck failed (proef) - https://proef.moza.rijksapp.dev/moza/"
+      send-on-resolved: true
+      minimum-reminder-interval: "15m"
+- name: cert
+  group: moza proef
+  url: https://proef.moza.rijksapp.dev/moza/
+  interval: 12h
+  conditions:
+    - "[CERTIFICATE_EXPIRATION] > 168h"
+  alerts:
+    - type: mattermost
+      description: "certificate expiring within 7 days (proef) - https://proef.moza.rijksapp.dev"
+      send-on-resolved: true
+      minimum-reminder-interval: "15m"
