@@ -8,8 +8,13 @@ Dit is de ZAD-variant van de Gatus die op het Standaard Platform draait (Helm ch
 
 ZAD deployt uitsluitend een container-image, dus de config zit in de image:
 
-- `Dockerfile`: `twinproduction/gatus:v5.34.0` (de versie van chart 1.5.0) met `config/config.yaml` op `/config/config.yaml`.
-- `config/config.yaml`: endpoints, UI en alerting. `webhook-url` is `${MATTERMOST_WEBHOOK_URL}`; Gatus vult env-vars in bij het laden van de config.
+- `Dockerfile`: `twinproduction/gatus:v5.34.0` (de versie van chart 1.5.0) met de map `config/` op `/config` en `GATUS_CONFIG_PATH=/config`. Gatus voegt alle `*.yaml`-bestanden in die map en de submappen samen tot een config.
+- `config/config.yaml`: UI en alerting. `webhook-url` is `${MATTERMOST_WEBHOOK_URL}`; Gatus vult env-vars in bij het laden van de config.
+- `config/<project>/endpoints.yaml`: de endpoints per project, elk in een eigen map:
+  - `mijnoverheidzakelijk/`: de endpoints van het Standaard Platform.
+  - `moza-proef/`: de MOZa-proefomgeving op <https://proef.moza.rijksapp.dev/moza/>, in het dashboard gebundeld onder de groep `moza proef`.
+
+Een nieuw project toevoegen: maak `config/<project>/endpoints.yaml` aan, geef de endpoints een eigen `group` en zet de namen in `EXPECTED_ENDPOINTS` in `test/smoke.sh`.
 - `.github/workflows/deploy.yml`: pull requests draaien de smoke test; een push naar `main` bouwt de image, pusht die naar GHCR en deployt op digest naar de `stable`-deployment via `RijksICTGilde/zad-actions/deploy`.
 
 ## Eenmalige setup
@@ -26,7 +31,7 @@ sh test/smoke.sh                       # podman, of docker als podman ontbreekt
 CONTAINER_CLI=docker sh test/smoke.sh
 ```
 
-De smoke test bouwt de image, start hem, wacht op `/health`, controleert dat de Mattermost-provider geconfigureerd is en dat alle endpoints uit `config/config.yaml` in `/api/v1/endpoints/statuses` verschijnen. De verwachte endpoint-namen staan in `EXPECTED_ENDPOINTS` in `test/smoke.sh`; voeg je een endpoint toe aan de config, voeg die naam daar dan ook toe.
+De smoke test bouwt de image, start hem, wacht op `/health`, controleert dat de Mattermost-provider geconfigureerd is en dat alle endpoints uit `config/` in `/api/v1/endpoints/statuses` verschijnen. De verwachte endpoint-namen staan in `EXPECTED_ENDPOINTS` in `test/smoke.sh`; voeg je een endpoint toe aan de config, voeg die naam daar dan ook toe.
 
 Handmatig draaien:
 

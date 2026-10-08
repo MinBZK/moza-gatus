@@ -22,7 +22,9 @@ mijnoverheid docs
 mijnoverheid profiel service (acceptatie)
 mijnoverheid moza
 cert-warning
-cert-critical'
+cert-critical
+moza
+cert'
 
 cleanup() {
   "$CONTAINER_CLI" rm -f "$CONTAINER" >/dev/null 2>&1 || true

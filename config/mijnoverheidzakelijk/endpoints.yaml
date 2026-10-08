@@ -1,0 +1,75 @@
+# Endpoints van MijnOverheidZakelijk; gelijk aan de config op het Standaard Platform.
+endpoints:
+- name: mijnoverheid
+  url: https://mijnoverheidzakelijk.nl
+  interval: 5m
+  conditions:
+    - "[STATUS] == 200"
+  alerts:
+    - type: mattermost
+      description: "healthcheck failed - https://mijnoverheidzakelijk.nl"
+      send-on-resolved: true
+      minimum-reminder-interval: "15m"
+- name: mijnoverheid www
+  url: https://www.mijnoverheidzakelijk.nl
+  interval: 5m
+  conditions:
+    - "[STATUS] == 200"
+  alerts:
+    - type: mattermost
+      description: "healthcheck failed - https://www.mijnoverheidzakelijk.nl"
+      send-on-resolved: true
+      minimum-reminder-interval: "15m"
+- name: mijnoverheid docs
+  url: https://docs.mijnoverheidzakelijk.nl
+  interval: 5m
+  conditions:
+    - "[STATUS] == 200"
+  alerts:
+    - type: mattermost
+      description: "healthcheck failed - https://docs.mijnoverheidzakelijk.nl"
+      send-on-resolved: true
+      minimum-reminder-interval: "15m"
+# The health endpoint of the profiel service is internal to its cluster; from ZAD only the
+# public URL is reachable, and its OpenAPI document is the one path that answers without auth.
+- name: mijnoverheid profiel service (acceptatie)
+  url: https://profiel.mijnoverheidzakelijk.nl/openapi.json
+  interval: 5m
+  conditions:
+    - "[STATUS] == 200"
+  alerts:
+    - type: mattermost
+      description: "healthcheck failed (acceptatie) - https://profiel.mijnoverheidzakelijk.nl"
+      send-on-resolved: true
+      minimum-reminder-interval: "15m"
+- name: mijnoverheid moza
+  url: https://moza.mijnoverheidzakelijk.nl
+  interval: 5m
+  conditions:
+    - "[STATUS] == 200"
+  alerts:
+    - type: mattermost
+      description: "healthcheck failed - https://moza.mijnoverheidzakelijk.nl"
+      send-on-resolved: true
+      minimum-reminder-interval: "15m"
+- name: cert-warning
+  url: https://www.mijnoverheidzakelijk.nl
+  interval: 12h
+  conditions:
+    - "[CERTIFICATE_EXPIRATION] > 168h"
+  alerts:
+    - type: mattermost
+      description: "certificate expiring within 7 days - https://www.mijnoverheidzakelijk.nl"
+      send-on-resolved: true
+      minimum-reminder-interval: "15m"
+
+- name: cert-critical
+  url: https://www.mijnoverheidzakelijk.nl
+  interval: 12h
+  conditions:
+    - "[CERTIFICATE_EXPIRATION] > 24h"
+  alerts:
+    - type: mattermost
+      description: "certificate expiring within 24h - https://www.mijnoverheidzakelijk.nl"
+      send-on-resolved: true
+      minimum-reminder-interval: "15m"
