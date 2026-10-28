@@ -34,19 +34,6 @@ endpoints:
       description: "healthcheck failed - https://docs.mijnoverheidzakelijk.nl"
       send-on-resolved: true
       minimum-reminder-interval: "15m"
-# The health endpoint of the profiel service is internal to its cluster; from ZAD only the
-# public URL is reachable, and its OpenAPI document is the one path that answers without auth.
-- name: mijnoverheid profiel service (acceptatie)
-  group: mijnoverheidzakelijk.nl
-  url: https://profiel.mijnoverheidzakelijk.nl/openapi.json
-  interval: 5m
-  conditions:
-    - "[STATUS] == 200"
-  alerts:
-    - type: mattermost
-      description: "healthcheck failed (acceptatie) - https://profiel.mijnoverheidzakelijk.nl"
-      send-on-resolved: true
-      minimum-reminder-interval: "15m"
 - name: mijnoverheid moza
   group: mijnoverheidzakelijk.nl
   url: https://moza.mijnoverheidzakelijk.nl
