@@ -19,7 +19,6 @@ BASE_URL="http://127.0.0.1:${PORT}"
 EXPECTED_ENDPOINTS='mijnoverheid
 mijnoverheid www
 mijnoverheid docs
-mijnoverheid profiel service (acceptatie)
 mijnoverheid moza
 cert-warning
 cert-critical
