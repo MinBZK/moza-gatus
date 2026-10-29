@@ -1,0 +1,26 @@
+# Endpoints van de MOZa-proefomgeving op .nl (moza-portaal, ux-fork, op ZAD).
+endpoints:
+- name: moza portaal
+  group: proef.moza.rijksapp.nl
+  url: https://proef.moza.rijksapp.nl/
+  interval: 5m
+  conditions:
+    - "[STATUS] == 200"
+    - "[BODY] == pat(*<title>Mijn overheid zakelijk*)"
+    - "[RESPONSE_TIME] < 3000"
+  alerts:
+    - type: mattermost
+      description: "healthcheck failed (proef .nl) - https://proef.moza.rijksapp.nl/"
+      send-on-resolved: true
+      minimum-reminder-interval: "15m"
+- name: cert
+  group: proef.moza.rijksapp.nl
+  url: https://proef.moza.rijksapp.nl/
+  interval: 12h
+  conditions:
+    - "[CERTIFICATE_EXPIRATION] > 168h"
+  alerts:
+    - type: mattermost
+      description: "certificate expiring within 7 days (proef .nl) - https://proef.moza.rijksapp.nl"
+      send-on-resolved: true
+      minimum-reminder-interval: "15m"
