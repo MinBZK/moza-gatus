@@ -23,7 +23,8 @@ mijnoverheid moza
 cert-warning
 cert-critical
 moza
-cert'
+cert
+moza portaal'
 
 cleanup() {
   "$CONTAINER_CLI" rm -f "$CONTAINER" >/dev/null 2>&1 || true
