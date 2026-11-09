@@ -24,7 +24,16 @@ mijnoverheid moza
 cert-warning
 cert-critical
 moza
-cert'
+cert
+fbs uitvraag
+fbs magazijn-a
+fbs magazijn-b
+fbs magazijn-simulator
+fbs demo-personas
+fbs stelselregister
+fbs profiel-stub
+fbs notificatie-stub
+fbs berichtenbox'
 
 cleanup() {
   "$CONTAINER_CLI" rm -f "$CONTAINER" >/dev/null 2>&1 || true

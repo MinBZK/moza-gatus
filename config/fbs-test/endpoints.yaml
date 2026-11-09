@@ -1,0 +1,138 @@
+# Endpoints van de testomgeving van het Federatief Berichtenstelsel (MinBZK/moza-poc-fbs-berichtenbox,
+# deployment `test` op ZAD). Previews (`pr-<n>`) staan hier bewust niet: die zijn tijdelijk.
+#
+# Geen eigen domein: alle componenten hangen onder het gedeelde ZAD-domein, dus de map en de group
+# heten naar de omgeving.
+#
+# De Quarkus-diensten worden op /q/health/ready gecontroleerd, niet op een willekeurig pad: readiness
+# telt hun opslag mee (Redis, PostgreSQL), dus een dienst die draait maar zijn werk niet kan doen telt
+# als storing. Het demopaneel ontbreekt: dat staat achter een inlogmuur, en een muur die antwoordt
+# zegt niets over het paneel erachter.
+#
+# failure-threshold 3 bij interval 2m: een melding na 4 tot 6 minuten, en een uitrol die een paar
+# minuten 503 geeft blijft stil.
+#
+# Let op: de Redis-storingsknop in het demopaneel maakt de uitvraag bewust onbereikbaar. Het paneel
+# kondigt dat vooraf in dit kanaal aan, onder de afzender "FBS Demo".
+endpoints:
+- name: fbs uitvraag
+  group: fbs-test
+  url: https://uitvraag-test-mpfb-8wh.rig.prd1.gn2.quattro.rijksapps.nl/q/health/ready
+  interval: 2m
+  conditions:
+    - "[STATUS] == 200"
+    - "[BODY].status == UP"
+  alerts:
+    - type: mattermost
+      description: "healthcheck failed (fbs test) - uitvraag"
+      failure-threshold: 3
+      send-on-resolved: true
+      minimum-reminder-interval: "15m"
+- name: fbs magazijn-a
+  group: fbs-test
+  url: https://magazijna-test-mpfm-w3h.rig.prd1.gn2.quattro.rijksapps.nl/q/health/ready
+  interval: 2m
+  conditions:
+    - "[STATUS] == 200"
+    - "[BODY].status == UP"
+  alerts:
+    - type: mattermost
+      description: "healthcheck failed (fbs test) - magazijn-a"
+      failure-threshold: 3
+      send-on-resolved: true
+      minimum-reminder-interval: "15m"
+- name: fbs magazijn-b
+  group: fbs-test
+  url: https://magazijnb-test-mpfm-w3h.rig.prd1.gn2.quattro.rijksapps.nl/q/health/ready
+  interval: 2m
+  conditions:
+    - "[STATUS] == 200"
+    - "[BODY].status == UP"
+  alerts:
+    - type: mattermost
+      description: "healthcheck failed (fbs test) - magazijn-b"
+      failure-threshold: 3
+      send-on-resolved: true
+      minimum-reminder-interval: "15m"
+- name: fbs magazijn-simulator
+  group: fbs-test
+  url: https://magazijnsimulator-test-mpfm-w3h.rig.prd1.gn2.quattro.rijksapps.nl/q/health/ready
+  interval: 2m
+  conditions:
+    - "[STATUS] == 200"
+    - "[BODY].status == UP"
+  alerts:
+    - type: mattermost
+      description: "healthcheck failed (fbs test) - magazijn-simulator"
+      failure-threshold: 3
+      send-on-resolved: true
+      minimum-reminder-interval: "15m"
+- name: fbs demo-personas
+  group: fbs-test
+  url: https://demopersonas-test-mpfm-w3h.rig.prd1.gn2.quattro.rijksapps.nl/q/health/ready
+  interval: 2m
+  conditions:
+    - "[STATUS] == 200"
+    - "[BODY].status == UP"
+  alerts:
+    - type: mattermost
+      description: "healthcheck failed (fbs test) - demo-personas"
+      failure-threshold: 3
+      send-on-resolved: true
+      minimum-reminder-interval: "15m"
+- name: fbs stelselregister
+  group: fbs-test
+  url: https://stelselregister-test-mpfs-rab.rig.prd1.gn2.quattro.rijksapps.nl/q/health/ready
+  interval: 2m
+  conditions:
+    - "[STATUS] == 200"
+    - "[BODY].status == UP"
+  alerts:
+    - type: mattermost
+      description: "healthcheck failed (fbs test) - stelselregister"
+      failure-threshold: 3
+      send-on-resolved: true
+      minimum-reminder-interval: "15m"
+# De profiel- en notificatiestub zijn WireMock met een dichte admin-API; /gezondheid is een gewone
+# stub-mapping die alleen antwoordt als de stub zijn mappings geladen heeft.
+- name: fbs profiel-stub
+  group: fbs-test
+  url: https://profiel-test-mpfpsm-lcl.rig.prd1.gn2.quattro.rijksapps.nl/gezondheid
+  interval: 2m
+  conditions:
+    - "[STATUS] == 200"
+    - "[BODY].status == healthy"
+  alerts:
+    - type: mattermost
+      description: "healthcheck failed (fbs test) - profiel-stub"
+      failure-threshold: 3
+      send-on-resolved: true
+      minimum-reminder-interval: "15m"
+- name: fbs notificatie-stub
+  group: fbs-test
+  url: https://notificatie-test-mpfpsm-lcl.rig.prd1.gn2.quattro.rijksapps.nl/gezondheid
+  interval: 2m
+  conditions:
+    - "[STATUS] == 200"
+    - "[BODY].status == healthy"
+  alerts:
+    - type: mattermost
+      description: "healthcheck failed (fbs test) - notificatie-stub"
+      failure-threshold: 3
+      send-on-resolved: true
+      minimum-reminder-interval: "15m"
+# De berichtenbox uit de proeftuin (MinBZK/moza-poc), als component in het magazijnen-project; geen
+# health-pad, dus de pagina zelf.
+- name: fbs berichtenbox
+  group: fbs-test
+  url: https://proeftuin-test-mpfm-w3h.rig.prd1.gn2.quattro.rijksapps.nl/
+  interval: 2m
+  conditions:
+    - "[STATUS] == 200"
+    - "[BODY] == pat(*<title>MijnOverheid Zakelijk*)"
+  alerts:
+    - type: mattermost
+      description: "healthcheck failed (fbs test) - berichtenbox"
+      failure-threshold: 3
+      send-on-resolved: true
+      minimum-reminder-interval: "15m"
