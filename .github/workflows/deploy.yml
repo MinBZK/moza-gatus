@@ -3,8 +3,8 @@
 # Elke push/merge naar main bouwt de image (Gatus + config/) en deployt die naar de
 # 'stable'-deployment. Een pull request draait de smoke test en krijgt een preview op
 # een eigen deployment 'pr-<nummer>'; die wordt opgeruimd als de PR sluit. Previews
-# melden in het testkanaal zodra de acceptatie-webhook er is, stable in het teamkanaal
-# (zie "Mattermost-webhooks" in README.md).
+# melden in het testkanaal alerts-test, stable in het teamkanaal (zie "Mattermost-webhooks"
+# in README.md).
 #
 # Vereiste repo-secrets:
 #   ZAD_API_KEY — ZAD Operations Manager API key

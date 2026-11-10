@@ -13,7 +13,7 @@ ZAD deployt uitsluitend een container-image, dus de config zit in de image:
 - `config/<domein>/endpoints.yaml`: de endpoints per domein, elk in een eigen map. De mapnaam is ook de `group` van de endpoints, zodat elk domein op het dashboard een eigen blok heeft:
   - `mijnoverheidzakelijk.nl/`: alles op mijnoverheidzakelijk.nl, de endpoints van het Standaard Platform.
   - `proef.moza.rijksapp.dev/`: de MOZa-proefomgeving op <https://proef.moza.rijksapp.dev/moza/>.
-- `.github/workflows/deploy.yml`: pull requests draaien de smoke test en krijgen een preview op deployment `pr-<nummer>` (url als PR-comment, alerts naar het testkanaal zodra de acceptatie-webhook er is, opgeruimd bij sluiten van de PR); een push naar `main` bouwt de image, pusht die naar GHCR en deployt op digest naar de `stable`-deployment via `RijksICTGilde/zad-actions/deploy`.
+- `.github/workflows/deploy.yml`: pull requests draaien de smoke test en krijgen een preview op deployment `pr-<nummer>` (url als PR-comment, alerts naar het testkanaal `alerts-test`, opgeruimd bij sluiten van de PR); een push naar `main` bouwt de image, pusht die naar GHCR en deployt op digest naar de `stable`-deployment via `RijksICTGilde/zad-actions/deploy`.
 
 Een nieuw domein toevoegen: maak `config/<domein>/endpoints.yaml` aan, geef de endpoints `group: <domein>` en zet de namen in `EXPECTED_ENDPOINTS` in `test/smoke.sh`.
 
@@ -31,7 +31,7 @@ Gatus meldt via een incoming webhook in Digilab Chat (Mattermost). Er zijn er tw
 | Laag | Webhook | Kanaal |
 |---|---|---|
 | Override op deployment `stable` | de webhook-url uit de ConfigMap op het Standaard Platform | het teamkanaal waar de meldingen van beide Gatussen landen |
-| Componentbreed op `gatus` | eigen acceptatie-webhook (nog aan te maken) | een apart testkanaal, alleen voor deze bot |
+| Componentbreed op `gatus` | de acceptatie-webhook | [`alerts-test`](https://digilab.overheid.nl/chat/mijnoverheid-zakelijk/channels/alerts-test), alleen voor deze bot |
 
 Een override op een deployment wint van de componentbrede waarde, en reist niet mee naar een preview. Zo meldt `stable` in het teamkanaal en een preview (`pr-<nummer>`) in het testkanaal: een config-wijziging is vóór de merge met echte meldingen te zien, zonder het teamkanaal te vervuilen. Een preview draait de volledige config, dus een echte storing staat in het testkanaal ook.
 
@@ -41,7 +41,7 @@ Staat de webhook van het teamkanaal componentbreed, dan erft elke preview hem, e
 
 1. Een team-admin maakt hem aan via **Integrations** → **Incoming Webhooks** → **Add Incoming Webhook**. Weet niemand wie team-admin is, vraag het dan in het kanaal `mattermost-perikelen` van Digilab.
 2. Digilab Chat zet elke webhook vast op zijn kanaal; hij kan nergens anders posten.
-3. Het testkanaal krijgt een naam waaraan je ziet dat er alleen automatische berichten staan (bijvoorbeeld `moza-gatus-test`), met de naam van de tool in de kanaalheader. Geen gesprekken in dat kanaal.
+3. Een kanaal voor een bot krijgt een naam waaraan je ziet dat er alleen automatische berichten staan, zoals `alerts-test`, met de naam van de tool in de kanaalheader. Geen gesprekken in zo'n kanaal.
 4. De url is een wachtwoord: wie hem heeft, kan onder elke naam in het kanaal posten. Hij hoort alleen in Operations Manager, nooit in een repository, chat of ticket. Is hij uitgelekt, verwijder hem dan onder **Incoming Webhooks** en maak een nieuwe aan; zet de nieuwe url ook bij elke andere afnemer (het demopaneel van het Federatief Berichtenstelsel gebruikt de webhook van het teamkanaal ook).
 
 Zonder `MATTERMOST_WEBHOOK_URL` start Gatus wel, maar negeert hij de Mattermost-provider en verstuurt hij geen alerts; de opstartregel `configuredProviders=[mattermost]` in de log bevestigt dat hij er wel is.
