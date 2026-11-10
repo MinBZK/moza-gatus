@@ -26,25 +26,16 @@ Een nieuw domein toevoegen: maak `config/<domein>/endpoints.yaml` aan, geef de e
 
 ## Mattermost-webhooks
 
-Gatus meldt via een incoming webhook in Digilab Chat (Mattermost). Er zijn er twee, elk op een eigen laag van `MATTERMOST_WEBHOOK_URL` in Operations Manager:
+Twee incoming webhooks, elk op een eigen laag van `MATTERMOST_WEBHOOK_URL` in Operations Manager:
 
-| Laag | Webhook | Kanaal |
-|---|---|---|
-| Override op deployment `stable` | de webhook-url uit de ConfigMap op het Standaard Platform | het teamkanaal waar de meldingen van beide Gatussen landen |
-| Componentbreed op `gatus` | de acceptatie-webhook | [`alerts-test`](https://digilab.overheid.nl/chat/mijnoverheid-zakelijk/channels/alerts-test), alleen voor deze bot |
+- **Override op deployment `stable`:** de webhook van het teamkanaal (uit de ConfigMap op het Standaard Platform).
+- **Componentbreed op `gatus`:** de webhook van [`alerts-test`](https://digilab.overheid.nl/chat/mijnoverheid-zakelijk/channels/alerts-test). Previews (`pr-<nummer>`) erven die, want een deployment-override reist niet mee naar een preview. Zo zie je een config-wijziging vóór de merge met echte meldingen, buiten het teamkanaal.
 
-Een override op een deployment wint van de componentbrede waarde, en reist niet mee naar een preview. Zo meldt `stable` in het teamkanaal en een preview (`pr-<nummer>`) in het testkanaal: een config-wijziging is vóór de merge met echte meldingen te zien, zonder het teamkanaal te vervuilen. Een preview draait de volledige config, dus een echte storing staat in het testkanaal ook.
+Zet de webhook van het teamkanaal dus nooit componentbreed: dan meldt elke PR met een falende controle elk kwartier in het teamkanaal.
 
-Staat de webhook van het teamkanaal componentbreed, dan erft elke preview hem, en meldt een PR met een falende controle elk kwartier in het teamkanaal.
+Een webhook vraag je aan volgens de [handleiding van Digilab Chat](https://digilab.overheid.nl/docs/mattermost/#bots): een team-admin maakt hem aan via **Integrations** → **Incoming Webhooks** → **Add Incoming Webhook**, en hij post alleen in zijn eigen kanaal. De url is een wachtwoord: alleen in Operations Manager, nooit in een repository, chat of ticket. Uitgelekt? Verwijder hem en maak een nieuwe; het demopaneel van het Federatief Berichtenstelsel gebruikt de webhook van het teamkanaal ook.
 
-**Een webhook aanvragen** gaat volgens de [handleiding van Digilab Chat](https://digilab.overheid.nl/docs/mattermost/#bots):
-
-1. Een team-admin maakt hem aan via **Integrations** → **Incoming Webhooks** → **Add Incoming Webhook**. Weet niemand wie team-admin is, vraag het dan in het kanaal `mattermost-perikelen` van Digilab.
-2. Digilab Chat zet elke webhook vast op zijn kanaal; hij kan nergens anders posten.
-3. Een kanaal voor een bot krijgt een naam waaraan je ziet dat er alleen automatische berichten staan, zoals `alerts-test`, met de naam van de tool in de kanaalheader. Geen gesprekken in zo'n kanaal.
-4. De url is een wachtwoord: wie hem heeft, kan onder elke naam in het kanaal posten. Hij hoort alleen in Operations Manager, nooit in een repository, chat of ticket. Is hij uitgelekt, verwijder hem dan onder **Incoming Webhooks** en maak een nieuwe aan; zet de nieuwe url ook bij elke andere afnemer (het demopaneel van het Federatief Berichtenstelsel gebruikt de webhook van het teamkanaal ook).
-
-Zonder `MATTERMOST_WEBHOOK_URL` start Gatus wel, maar negeert hij de Mattermost-provider en verstuurt hij geen alerts; de opstartregel `configuredProviders=[mattermost]` in de log bevestigt dat hij er wel is.
+De opstartregel `configuredProviders=[mattermost]` in de log bevestigt dat Gatus een webhook heeft; zonder meldt hij niets.
 
 ## Lokaal testen
 
