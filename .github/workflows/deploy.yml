@@ -3,13 +3,14 @@
 # Elke push/merge naar main bouwt de image (Gatus + config/) en deployt die naar de
 # 'stable'-deployment. Een pull request draait de smoke test en krijgt een preview op
 # een eigen deployment 'pr-<nummer>'; die wordt opgeruimd als de PR sluit. Previews
-# hebben geen MATTERMOST_WEBHOOK_URL en sturen dus geen alerts.
+# melden in het testkanaal alerts-test, stable in het teamkanaal (zie "Mattermost-webhooks"
+# in README.md).
 #
 # Vereiste repo-secrets:
 #   ZAD_API_KEY — ZAD Operations Manager API key
 #
 # De Mattermost-webhook staat niet in de image maar als env-var
-# MATTERMOST_WEBHOOK_URL op de deployment in Operations Manager (zie README.md).
+# MATTERMOST_WEBHOOK_URL in Operations Manager, op twee lagen (zie README.md).
 
 name: ZAD Deploy
 

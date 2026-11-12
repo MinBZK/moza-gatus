@@ -13,7 +13,7 @@ ZAD deployt uitsluitend een container-image, dus de config zit in de image:
 - `config/<domein>/endpoints.yaml`: de endpoints per domein, elk in een eigen map. De mapnaam is ook de `group` van de endpoints, zodat elk domein op het dashboard een eigen blok heeft:
   - `mijnoverheidzakelijk.nl/`: alles op mijnoverheidzakelijk.nl, de endpoints van het Standaard Platform.
   - `proef.moza.rijksapp.dev/`: de MOZa-proefomgeving op <https://proef.moza.rijksapp.dev/moza/>.
-- `.github/workflows/deploy.yml`: pull requests draaien de smoke test en krijgen een preview op deployment `pr-<nummer>` (url als PR-comment, zonder Mattermost-alerts, opgeruimd bij sluiten van de PR); een push naar `main` bouwt de image, pusht die naar GHCR en deployt op digest naar de `stable`-deployment via `RijksICTGilde/zad-actions/deploy`.
+- `.github/workflows/deploy.yml`: pull requests draaien de smoke test en krijgen een preview op deployment `pr-<nummer>` (url als PR-comment, alerts naar het testkanaal `alerts-test`, opgeruimd bij sluiten van de PR); een push naar `main` bouwt de image, pusht die naar GHCR en deployt op digest naar de `stable`-deployment via `RijksICTGilde/zad-actions/deploy`.
 
 Een nieuw domein toevoegen: maak `config/<domein>/endpoints.yaml` aan, geef de endpoints `group: <domein>` en zet de namen in `EXPECTED_ENDPOINTS` in `test/smoke.sh`.
 
@@ -21,8 +21,21 @@ Een nieuw domein toevoegen: maak `config/<domein>/endpoints.yaml` aan, geef de e
 
 1. ZAD-project aanmaken voor Gatus en de project-id invullen in `ZAD_PROJECT_ID` in `deploy.yml`.
 2. In Operations Manager een deployment `stable` met component `gatus` aanmaken.
-3. Op die deployment de env-var `MATTERMOST_WEBHOOK_URL` zetten (de webhook-url uit de ConfigMap op het Standaard Platform). Zonder die env-var start Gatus wel, maar negeert hij de Mattermost-provider en verstuurt hij geen alerts.
+3. De twee webhooks zetten zoals beschreven onder [Mattermost-webhooks](#mattermost-webhooks).
 4. Repo-secret `ZAD_API_KEY` zetten.
+
+## Mattermost-webhooks
+
+Twee incoming webhooks, elk op een eigen laag van `MATTERMOST_WEBHOOK_URL` in Operations Manager:
+
+- **Override op deployment `stable`:** de webhook van het teamkanaal (uit de ConfigMap op het Standaard Platform).
+- **Componentbreed op `gatus`:** de webhook van [`alerts-test`](https://digilab.overheid.nl/chat/mijnoverheid-zakelijk/channels/alerts-test). Previews (`pr-<nummer>`) erven die, want een deployment-override reist niet mee naar een preview. Zo zie je een config-wijziging vóór de merge met echte meldingen, buiten het teamkanaal.
+
+Zet de webhook van het teamkanaal dus nooit componentbreed: dan meldt elke PR met een falende controle elk kwartier in het teamkanaal.
+
+Een webhook vraag je aan volgens de [handleiding van Digilab Chat](https://digilab.overheid.nl/docs/mattermost/#bots): een team-admin maakt hem aan via **Integrations** → **Incoming Webhooks** → **Add Incoming Webhook**, en hij post alleen in zijn eigen kanaal. De url is een wachtwoord: alleen in Operations Manager, nooit in een repository, chat of ticket. Uitgelekt? Verwijder hem en maak een nieuwe; het demopaneel van het Federatief Berichtenstelsel gebruikt de webhook van het teamkanaal ook.
+
+De opstartregel `configuredProviders=[mattermost]` in de log bevestigt dat Gatus een webhook heeft; zonder meldt hij niets.
 
 ## Lokaal testen
 
