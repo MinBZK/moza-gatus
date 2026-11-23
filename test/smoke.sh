@@ -19,11 +19,9 @@ BASE_URL="http://127.0.0.1:${PORT}"
 EXPECTED_ENDPOINTS='mijnoverheid
 mijnoverheid www
 mijnoverheid docs
-mijnoverheid moza
+mijnoverheid portaal proef
 cert-warning
-cert-critical
-moza
-cert'
+cert-critical'
 
 cleanup() {
   "$CONTAINER_CLI" rm -f "$CONTAINER" >/dev/null 2>&1 || true

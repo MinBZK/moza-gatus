@@ -1,70 +1,70 @@
 # Endpoints op het domein mijnoverheidzakelijk.nl; gelijk aan de config op het Standaard
 # Platform, op de group na.
 endpoints:
-- name: mijnoverheid
-  group: mijnoverheidzakelijk.nl
-  url: https://mijnoverheidzakelijk.nl
-  interval: 5m
-  conditions:
-    - "[STATUS] == 200"
-  alerts:
-    - type: mattermost
-      description: "healthcheck failed - https://mijnoverheidzakelijk.nl"
-      send-on-resolved: true
-      minimum-reminder-interval: "15m"
-- name: mijnoverheid www
-  group: mijnoverheidzakelijk.nl
-  url: https://www.mijnoverheidzakelijk.nl
-  interval: 5m
-  conditions:
-    - "[STATUS] == 200"
-  alerts:
-    - type: mattermost
-      description: "healthcheck failed - https://www.mijnoverheidzakelijk.nl"
-      send-on-resolved: true
-      minimum-reminder-interval: "15m"
-- name: mijnoverheid docs
-  group: mijnoverheidzakelijk.nl
-  url: https://docs.mijnoverheidzakelijk.nl
-  interval: 5m
-  conditions:
-    - "[STATUS] == 200"
-  alerts:
-    - type: mattermost
-      description: "healthcheck failed - https://docs.mijnoverheidzakelijk.nl"
-      send-on-resolved: true
-      minimum-reminder-interval: "15m"
-- name: mijnoverheid moza
-  group: mijnoverheidzakelijk.nl
-  url: https://moza.mijnoverheidzakelijk.nl
-  interval: 5m
-  conditions:
-    - "[STATUS] == 200"
-  alerts:
-    - type: mattermost
-      description: "healthcheck failed - https://moza.mijnoverheidzakelijk.nl"
-      send-on-resolved: true
-      minimum-reminder-interval: "15m"
-- name: cert-warning
-  group: mijnoverheidzakelijk.nl
-  url: https://www.mijnoverheidzakelijk.nl
-  interval: 12h
-  conditions:
-    - "[CERTIFICATE_EXPIRATION] > 168h"
-  alerts:
-    - type: mattermost
-      description: "certificate expiring within 7 days - https://www.mijnoverheidzakelijk.nl"
-      send-on-resolved: true
-      minimum-reminder-interval: "15m"
+  - name: mijnoverheid
+    group: mijnoverheidzakelijk.nl
+    url: https://mijnoverheidzakelijk.nl
+    interval: 5m
+    conditions:
+      - "[STATUS] == 200"
+    alerts:
+      - type: mattermost
+        description: "healthcheck failed - https://mijnoverheidzakelijk.nl"
+        send-on-resolved: true
+        minimum-reminder-interval: "15m"
+  - name: mijnoverheid www
+    group: mijnoverheidzakelijk.nl
+    url: https://www.mijnoverheidzakelijk.nl
+    interval: 5m
+    conditions:
+      - "[STATUS] == 200"
+    alerts:
+      - type: mattermost
+        description: "healthcheck failed - https://www.mijnoverheidzakelijk.nl"
+        send-on-resolved: true
+        minimum-reminder-interval: "15m"
+  - name: mijnoverheid docs
+    group: mijnoverheidzakelijk.nl
+    url: https://docs.mijnoverheidzakelijk.nl
+    interval: 5m
+    conditions:
+      - "[STATUS] == 200"
+    alerts:
+      - type: mattermost
+        description: "healthcheck failed - https://docs.mijnoverheidzakelijk.nl"
+        send-on-resolved: true
+        minimum-reminder-interval: "15m"
+  - name: mijnoverheid portaal proef
+    group: mijnoverheidzakelijk.nl
+    url: https://proef.mijnoverheidzakelijk.nl
+    interval: 5m
+    conditions:
+      - "[STATUS] == 200"
+    alerts:
+      - type: mattermost
+        description: "healthcheck failed - https://proef.mijnoverheidzakelijk.nl"
+        send-on-resolved: true
+        minimum-reminder-interval: "15m"
+  - name: cert-warning
+    group: mijnoverheidzakelijk.nl
+    url: https://www.mijnoverheidzakelijk.nl
+    interval: 12h
+    conditions:
+      - "[CERTIFICATE_EXPIRATION] > 168h"
+    alerts:
+      - type: mattermost
+        description: "certificate expiring within 7 days - https://www.mijnoverheidzakelijk.nl"
+        send-on-resolved: true
+        minimum-reminder-interval: "15m"
 
-- name: cert-critical
-  group: mijnoverheidzakelijk.nl
-  url: https://www.mijnoverheidzakelijk.nl
-  interval: 12h
-  conditions:
-    - "[CERTIFICATE_EXPIRATION] > 24h"
-  alerts:
-    - type: mattermost
-      description: "certificate expiring within 24h - https://www.mijnoverheidzakelijk.nl"
-      send-on-resolved: true
-      minimum-reminder-interval: "15m"
+  - name: cert-critical
+    group: mijnoverheidzakelijk.nl
+    url: https://www.mijnoverheidzakelijk.nl
+    interval: 12h
+    conditions:
+      - "[CERTIFICATE_EXPIRATION] > 24h"
+    alerts:
+      - type: mattermost
+        description: "certificate expiring within 24h - https://www.mijnoverheidzakelijk.nl"
+        send-on-resolved: true
+        minimum-reminder-interval: "15m"

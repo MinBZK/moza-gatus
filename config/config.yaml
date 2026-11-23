@@ -3,11 +3,11 @@ ui:
   title: "Health | MijnOverheidZakelijk"
   dashboard-heading: "MijnOverheidZakelijk"
   header: "MijnOverheidZakelijk"
-  dashboard-subheading: "Status van de health van onze applicaties en urls"
+  dashboard-subheading: "Status van de health van onze applicaties en URLs"
   favicon:
     default: https://www.mijnoverheidzakelijk.nl/favicon.ico
   default-sort-by: group
-  logo: https://www.rijksoverheid.nl/binaries/content/gallery/rijksoverheid/channel-afbeeldingen/logos/beeldmerk-rijksoverheid-desktop.svg
+  logo: https://mijnoverheidzakelijk.nl/images/logo-rijksoverheid.svg
 alerting:
   mattermost:
     webhook-url: "${MATTERMOST_WEBHOOK_URL}"
